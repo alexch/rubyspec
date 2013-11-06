@@ -23,6 +23,26 @@ describe "Array#select" do
     array.select { true }.should == [1, 'two', 3.0, array, array, array, array, array]
     array.select { false }.should == []
   end
+
+  it "yields each element to the block" do
+    a = []
+    x = [1, 2, 3]
+    x.select { |item| a << item }
+    a.should == [1, 2, 3]
+  end
+
+  it "yields each element to a block that takes multiple arguments" do
+    a = [[1, 2], :a, [3, 4]]
+    b = []
+
+    a.select { |x, y| b << x }
+    b.should == [1, :a, 3]
+
+    b = []
+    a.select { |x, y| b << y }
+    b.should == [2, nil, 4]
+  end
+
 end
 
 ruby_version_is "1.9" do
